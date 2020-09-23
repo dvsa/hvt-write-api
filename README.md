@@ -19,7 +19,7 @@ A WRITE api for HVT testing data
 
 - `npm run start:dev`
 - To ensure that the lambdas have been successfully served, run the following command in a separate terminal:
-    - `curl --location --request POST 'localhost:3002?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`
+    - `curl --location --request POST 'localhost:3001?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`
     - the response should be: `{"body":{"test":"test"}}`
 
 
@@ -28,7 +28,7 @@ A WRITE api for HVT testing data
 - Run lambdas in debug mode: `npm run start:dev -- -d 5858`
 - Add a breakpoint to the lambda being tested (`src/handler/post.ts`)
 - Run the debug config from VS Code that corresponds to lambda being tested (`PostLambdaFunction`)
-- Send an HTTP request to the lambda's URI (`curl --location --request POST 'localhost:3002?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`)
+- Send an HTTP request to the lambda's URI (`curl --location --request POST 'localhost:3001?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`)
 
 
 **Tests**
