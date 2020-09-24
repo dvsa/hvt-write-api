@@ -17,10 +17,10 @@ Resources:
       CodeUri: src/handler/
       Handler: dbPut.handler
       Runtime: nodejs12.x 
-      Environment:
-        Variables:
-          DYNAMO_URL: !Ref DYNAMO_URL
-          DYNAMO_REGION: !Ref DYNAMO_REGION
+              Environment:
+          Variables:
+            DYNAMO_URL: !Ref DYNAMO_URL
+            DYNAMO_REGION: !Ref DYNAMO_REGION
       Events:
         PutLambdaApi:
           Type: Api
@@ -33,12 +33,8 @@ Resources:
       CodeUri: src/handler/
       Handler: dbDelete.handler
       Runtime: nodejs12.x  
-      Environment:
-        Variables:
-          DYNAMO_URL: !Ref DYNAMO_URL
-          DYNAMO_REGION: !Ref DYNAMO_REGION
       Events:
-        PutLambdaApi:
+        DeleteLambdaApi:
           Type: Api
           Properties:
             Path: /{table}/{id}
