@@ -1,20 +1,48 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
+Parameters:
+  DYNAMO_URL:
+    Type: String
+    Description: Dynamodb host url
+  DYNAMO_REGION:
+    Type: String
+    Description: Dynamodb host url
+    Default: local
+
 Resources:
-  PostLambdaFunction:
+  PutLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       CodeUri: src/handler/
-      Handler: post.handler
-      Runtime: nodejs12.x  
+      Handler: dbPut.handler
+      Runtime: nodejs12.x 
+      Environment:
+        Variables:
+          DYNAMO_URL: !Ref DYNAMO_URL
+          DYNAMO_REGION: !Ref DYNAMO_REGION
       Events:
-        PostLambdaApi:
+        PutLambdaApi:
           Type: Api
           Properties:
-            Path: /
-            Method: post
-
+            Path: /{table}
+            Method: put
+  DeleteLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: src/handler/
+      Handler: dbDelete.handler
+      Runtime: nodejs12.x  
+      Environment:
+        Variables:
+          DYNAMO_URL: !Ref DYNAMO_URL
+          DYNAMO_REGION: !Ref DYNAMO_REGION
+      Events:
+        PutLambdaApi:
+          Type: Api
+          Properties:
+            Path: /{table}/{id}
+            Method: delete
 Outputs:
   PostLambdaApi:
     Description: "API Gateway endpoint URL for GetLambdaFunction on dev stage"
