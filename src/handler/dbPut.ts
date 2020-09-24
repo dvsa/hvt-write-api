@@ -12,6 +12,7 @@ import * as dynamodb from '../service/dynamodb.service';
 export const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
   const logger: Logger = createLogger(event, context);
   const pathParams: Record<string, string> = event.pathParameters;
+
   try {
     const { table } = pathParams;
     const { body } = event;

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
-    "test": "DYNAMO_URL='http://localhost:8000' DYNAMO_REGION='local' jest -c jest.config.js --coverage",
-    "test:integration": "DYNAMO_URL='http://localhost:8000' DYNAMO_REGION='local' jest -c jest.integration.config.js --coverage",
+    "test": "docker-compose up -d && DYNAMO_URL='http://localhost:8001' DYNAMO_REGION='local' jest -c jest.config.js --coverage",
+    "test:integration": "docker-compose up -d && DYNAMO_URL='http://localhost:8001' DYNAMO_REGION='local' jest -c jest.integration.config.js --coverage",
     "test:unit": "jest -c jest.unit.config.js --coverage",
     "build:dev": "NODE_ENV=development webpack-cli",
     "start:dev": "DYNAMO_URL='http://host.docker.internal:8000' DYNAMO_REGION='local' sam local start-api --docker-network hvt-lambda-network -p 3001",
