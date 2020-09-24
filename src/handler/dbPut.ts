@@ -6,6 +6,8 @@ import * as dynamodb from '../service/dynamodb.service';
  * Lambda Handler
  *
  * @param {APIGatewayProxyEvent} event
+ *  PathParam should have following structure: /{table}
+ *  Body should consist of proper JSON object.
  * @param {Context} context
  * @returns {Promise<APIGatewayProxyResult>}
  */
