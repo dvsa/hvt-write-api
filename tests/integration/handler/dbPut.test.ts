@@ -33,7 +33,7 @@ describe('PUT Lambda Function', () => {
     expect(item).toEqual(EXPECTED1);
   });
 
-  test('should throw an error when wrong params', async () => {
+  test('should rethrow an error', async () => {
     const pathParameters: Record<string, string> = { table: 'TEST_TABLE_NO_EXISTS' };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
     const body = JSON.stringify(EXPECTED1);
