@@ -22,7 +22,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
     const response = await dynamodb.remove({ [keyName]: id }, table);
 
     return {
-      statusCode: 201,
+      statusCode: 200,
       body: JSON.stringify(response),
     };
   } catch (error) {
