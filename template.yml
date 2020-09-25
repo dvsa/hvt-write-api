@@ -44,9 +44,15 @@ Resources:
             Path: /{table}/{id}
             Method: delete
 Outputs:
-  PostLambdaApi:
-    Description: "API Gateway endpoint URL for GetLambdaFunction on dev stage"
+  PutLambdaApi:
+    Description: "API Gateway endpoint URL for PutLambdaFunction on dev stage"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Dev/"
-  PostLambdaFunction:
-    Description: "Post Lambda Function ARN"
-    Value: !GetAtt PostLambdaFunction.Arn
+  PutLambdaFunction:
+    Description: "Put Lambda Function ARN"
+    Value: !GetAtt PutLambdaFunction.Arn
+  DeleteLambdaApi:
+    Description: "API Gateway endpoint URL for DeleteLambdaFunction on dev stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Dev/"
+  DeleteLambdaFunction:
+    Description: "Delete Lambda Function ARN"
+    Value: !GetAtt DeleteLambdaFunction.Arn

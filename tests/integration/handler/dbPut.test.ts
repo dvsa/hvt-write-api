@@ -33,6 +33,22 @@ describe('PUT Lambda Function', () => {
     expect(item).toEqual(EXPECTED1);
   });
 
+  test('should throw an error when wrong params', async () => {
+    const pathParameters: Record<string, string> = { table: 'TEST_TABLE_NO_EXISTS' };
+    const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
+    const body = JSON.stringify(EXPECTED1);
+    const headers: Record<string, string> = {};
+    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
+      pathParameters,
+      requestContext,
+      headers,
+      body,
+    };
+    const contextMock: Context = <Context> { awsRequestId: v4() };
+
+    await expect(handler(eventMock, contextMock)).rejects.toThrow();
+  });
+
   beforeAll(async () => {
     const params = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
     await dynamoHelper.createTable(params);

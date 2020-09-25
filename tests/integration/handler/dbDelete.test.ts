@@ -39,6 +39,26 @@ describe('DELETE Lambda Function', () => {
     expect(items[0]).toEqual(EXPECTED2);
   });
 
+  test('should throw error when no keyName givent', async () => {
+    const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
+    const queryStringParameters: Record<string, string> = { };
+    const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
+    const body = JSON.stringify(EXPECTED1);
+    const headers: Record<string, string> = {};
+    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
+      pathParameters,
+      queryStringParameters,
+      requestContext,
+      headers,
+      body,
+    };
+    const contextMock: Context = <Context> { awsRequestId: v4() };
+
+    await expect(handler(eventMock, contextMock)).rejects.toThrow(
+      'One of the required keys was not given a value',
+    );
+  });
+
   beforeAll(async () => {
     const params = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
     await dynamoHelper.createTable(params);
