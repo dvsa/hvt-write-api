@@ -6,7 +6,7 @@ services:
     container_name: hvt-lambda-dynamodb-write-integration-test
     command: -jar DynamoDBLocal.jar -sharedDb
     ports:
-      - '8001:8000'
+      - '8002:8000'
     networks:
       - localdev
 

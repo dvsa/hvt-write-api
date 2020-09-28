@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { DynamoDB } from 'aws-sdk';
-import { AttributeMap, PutItemOutput, ScanOutput } from 'aws-sdk/clients/dynamodb';
+import { AttributeMap, PutItemOutput } from 'aws-sdk/clients/dynamodb';
 
 type DynamoKey = {[key: string]: string};
 
@@ -17,7 +15,7 @@ const DynamoClient = new DynamoDB.DocumentClient({
   region: process.env.DYNAMO_REGION,
 });
 
-export const getDeleteTableParams = (tableName: string): unknown => {
+export const getDeleteTableParams = (tableName: string): Record<string, unknown> => {
   const params = {
     TableName: tableName,
   };
@@ -25,8 +23,8 @@ export const getDeleteTableParams = (tableName: string): unknown => {
   return params;
 };
 
-export const getCreateTableParams = (keyName: string, tableName: string): unknown => {
-  const params = {
+export const getCreateTableParams = (keyName: string, tableName: string): Record<string, unknown> => {
+  const params: Record<string, unknown> = {
     AttributeDefinitions: [
       {
         AttributeName: keyName,

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as dynamodb from '../../../src/service/dynamodb.service';
 import * as dynamoHelper from '../test-helpers/dynamo.helper';
 
@@ -29,20 +27,20 @@ describe('Test dynamodb service', () => {
   });
 
   beforeAll(async () => {
-    const params = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const params: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(params);
   });
 
   beforeEach(async () => {
-    const deleteParams = dynamoHelper.getDeleteTableParams(TEST_TABLE);
+    const deleteParams: Record<string, unknown> = dynamoHelper.getDeleteTableParams(TEST_TABLE);
     await dynamoHelper.deleteTable(deleteParams);
 
-    const createParams = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const createParams: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(createParams);
   });
 
   afterAll(async () => {
-    const deleteParams = dynamoHelper.getDeleteTableParams(TEST_TABLE);
+    const deleteParams: Record<string, unknown> = dynamoHelper.getDeleteTableParams(TEST_TABLE);
     await dynamoHelper.deleteTable(deleteParams);
   });
 });

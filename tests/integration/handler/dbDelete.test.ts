@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type {
   APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext,
 } from 'aws-lambda';
@@ -14,7 +11,7 @@ const EXPECTED1 = { id: 'test-id-1', attr1: 'test-attr-1' };
 const EXPECTED2 = { id: 'test-id-2', attr1: 'test-attr-2' };
 
 describe('DELETE Lambda Function', () => {
-  test('should return 201 when item DELETED successfully', async () => {
+  test('should return 200 when item DELETED successfully', async () => {
     const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
     const queryStringParameters: Record<string, string> = { keyName: 'id' };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
@@ -34,7 +31,7 @@ describe('DELETE Lambda Function', () => {
     const res: APIGatewayProxyResult = await handler(eventMock, contextMock);
     const items = await dynamoHelper.getAll(TEST_TABLE);
 
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(items.length).toBe(1);
     expect(items[0]).toEqual(EXPECTED2);
   });
@@ -60,15 +57,15 @@ describe('DELETE Lambda Function', () => {
   });
 
   beforeAll(async () => {
-    const params = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const params: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(params);
   });
 
   beforeEach(async () => {
-    const deleteParams = dynamoHelper.getDeleteTableParams(TEST_TABLE);
+    const deleteParams: Record<string, unknown> = dynamoHelper.getDeleteTableParams(TEST_TABLE);
     await dynamoHelper.deleteTable(deleteParams);
 
-    const createParams = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const createParams: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(createParams);
   });
 

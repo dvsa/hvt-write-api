@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type {
   APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext,
 } from 'aws-lambda';
@@ -50,15 +47,15 @@ describe('PUT Lambda Function', () => {
   });
 
   beforeAll(async () => {
-    const params = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const params: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(params);
   });
 
   beforeEach(async () => {
-    const deleteParams = dynamoHelper.getDeleteTableParams(TEST_TABLE);
+    const deleteParams: Record<string, unknown> = dynamoHelper.getDeleteTableParams(TEST_TABLE);
     await dynamoHelper.deleteTable(deleteParams);
 
-    const createParams = dynamoHelper.getCreateTableParams('id', TEST_TABLE) as any;
+    const createParams: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(createParams);
   });
 

@@ -1,7 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import {
-  DeleteItemOutput, PutItemOutput,
-} from 'aws-sdk/clients/dynamodb';
+import { DeleteItemOutput, PutItemOutput } from 'aws-sdk/clients/dynamodb';
 
 type DynamoKey = {[key: string]: string};
 
@@ -10,7 +8,7 @@ const client = new DynamoDB.DocumentClient({
   region: process.env.DYNAMO_REGION,
 });
 
-export const put = async <T>(item: T, table: string): Promise<PutItemOutput> => {
+export const put = async <T> (item: T, table: string): Promise<PutItemOutput> => {
   const params = {
     Item: item,
     TableName: table,
