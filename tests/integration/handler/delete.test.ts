@@ -36,7 +36,7 @@ describe('DELETE Lambda Function', () => {
     expect(items[0]).toEqual(EXPECTED2);
   });
 
-  test('should throw error when no keyName givent', async () => {
+  test('should throw error when no keyName given', async () => {
     const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
     const queryStringParameters: Record<string, string> = { };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
