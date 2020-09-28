@@ -1,13 +1,15 @@
 {
   "name": "hvt-write-api",
   "version": "1.0.0",
-  "description": "A lambda to do read actions against the HVT dynamo db",
+  "description": "A lambda to do write actions against the HVT dynamo db",
   "main": "index.js",
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
-    "test": "jest -c jest.config.js --coverage",
+    "test": "docker-compose -f docker-compose.test.yml up -d && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='local' jest tests/ --coverage",
+    "test:integration": "docker-compose -f docker-compose.test.yml up -d && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='local' jest tests/integration/",
+    "test:unit": "jest tests/unit/",
     "build:dev": "NODE_ENV=development webpack-cli",
-    "start:dev": "sam local start-api --docker-network hvt-lambda-network -p 3001",
+    "start:dev": "DYNAMO_URL='http://host.docker.internal:8000' DYNAMO_REGION='local' sam local start-api --docker-network hvt-lambda-network -p 3001",
     "invoke": "sam local invoke"
   },
   "contributers": [
