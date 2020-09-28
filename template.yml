@@ -15,7 +15,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       CodeUri: src/handler/
-      Handler: dbPut.handler
+      Handler: put.handler
       Runtime: nodejs12.x 
       Environment:
         Variables:
@@ -32,7 +32,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       CodeUri: src/handler/
-      Handler: dbDelete.handler
+      Handler: delete.handler
       Runtime: nodejs12.x 
       Environment:
         Variables:

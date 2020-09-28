@@ -2,7 +2,7 @@ import type {
   APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext,
 } from 'aws-lambda';
 import { v4 } from 'uuid';
-import { handler } from '../../../src/handler/dbPut';
+import { handler } from '../../../src/handler/put';
 import * as dynamoHelper from '../test-helpers/dynamo.helper';
 
 const TEST_TABLE = 'TEST_TABLE_PUT';
