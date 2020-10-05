@@ -1,9 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { AttributeMap, PutItemOutput } from 'aws-sdk/clients/dynamodb';
-
-type DynamoKey = {[key: string]: string};
-
-type Item = AttributeMap;
+import { GetItemOutput, Key, PutItemOutput } from 'aws-sdk/clients/dynamodb';
 
 const rawDynamoClient = new DynamoDB({
   endpoint: process.env.DYNAMO_URL,
@@ -55,7 +51,7 @@ export const deleteTable = async (params) => {
   await rawDynamoClient.deleteTable(params).promise();
 };
 
-export const get = async (key: DynamoKey, table: string): Promise<Item> => {
+export const get = async (key: Key, table: string): Promise<GetItemOutput> => {
   const params = {
     Key: key,
     TableName: table,
@@ -66,7 +62,7 @@ export const get = async (key: DynamoKey, table: string): Promise<Item> => {
   return data.Item;
 };
 
-export const getAll = async (table: string): Promise<Item[]> => {
+export const getAll = async (table: string): Promise<GetItemOutput[]> => {
   const params = {
     TableName: table,
   };
@@ -76,12 +72,11 @@ export const getAll = async (table: string): Promise<Item[]> => {
   return response.Items;
 };
 
-export const put = async <T>(item: T, table: string): Promise<PutItemOutput> => {
+export const create = async <T> (item: T, table: string): Promise<PutItemOutput> => {
   const params = {
     Item: item,
     TableName: table,
   };
 
-  const res = await DynamoClient.put(params).promise();
-  return res;
+  return DynamoClient.put(params).promise();
 };

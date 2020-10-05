@@ -26,5 +26,29 @@
       "stopOnEntry": false,
       "sourceMaps": true
     },
+    {
+      "name": "PutLambdaFunction",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "${workspaceRoot}/.aws-sam/build/PutLambdaFunction",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "sourceMaps": true
+    },
+    {
+      "name": "DeleteLambdaFunction",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "${workspaceRoot}/.aws-sam/build/DeleteLambdaFunction",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "sourceMaps": true
+    },
   ]
 }

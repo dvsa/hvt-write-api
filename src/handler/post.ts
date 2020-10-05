@@ -1,5 +1,4 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { AttributeValue } from 'aws-sdk/clients/dynamodb';
 import { createLogger, Logger } from '../util/logger';
 import * as dynamodb from '../service/dynamodb.service';
 
@@ -7,25 +6,25 @@ import * as dynamodb from '../service/dynamodb.service';
  * Lambda Handler
  *
  * @param {APIGatewayProxyEvent} event
- *  PathParam should have following structure: /{table}/{id}
+ *  PathParam should have following structure: /{table}
+ *  Body should consist of proper JSON object.
  * @param {Context} context
  * @returns {Promise<APIGatewayProxyResult>}
  */
 export const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
   const logger: Logger = createLogger(event, context);
   const pathParams: Record<string, string> = event.pathParameters;
-  const queryParams: Record<string, string> = event.queryStringParameters;
 
   try {
-    const id: AttributeValue = <AttributeValue> pathParams.id;
     const { table } = pathParams;
-    const { keyName } = queryParams;
+    const { body } = event;
+    const item: Record<string, unknown> = <Record<string, unknown>> JSON.parse(body);
 
-    await dynamodb.remove({ [keyName]: id }, table);
+    await dynamodb.create(item, table);
 
     return {
-      statusCode: 203,
-      body: null,
+      statusCode: 201,
+      body: JSON.stringify(item),
     };
   } catch (error) {
     logger.error(error);
