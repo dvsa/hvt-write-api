@@ -11,6 +11,23 @@ Parameters:
     Default: local
 
 Resources:
+  PostLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: src/handler/
+      Handler: post.handler
+      Runtime: nodejs12.x 
+      Environment:
+        Variables:
+          DYNAMO_URL: !Ref DYNAMO_URL
+          DYNAMO_REGION: !Ref DYNAMO_REGION
+      Events:
+        PutLambdaApi:
+          Type: Api
+          Properties:
+            Path: /{table}
+            Method: post
+
   PutLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -25,7 +42,7 @@ Resources:
         PutLambdaApi:
           Type: Api
           Properties:
-            Path: /{table}
+            Path: /{table}/{id}
             Method: put
   
   DeleteLambdaFunction:

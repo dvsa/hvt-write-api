@@ -1,24 +1,21 @@
 import type {
-  APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext,
+  APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext, AttributeValue,
 } from 'aws-lambda';
 import { v4 } from 'uuid';
-import { handler } from '../../../src/handler/delete';
+import { handler } from '../../../src/handler/post';
 import * as dynamoHelper from '../test-helpers/dynamo.helper';
 
-const TEST_TABLE = 'TEST_TABLE_DELETE';
+const TEST_TABLE = 'TEST_TABLE_PUT';
 const EXPECTED1 = { id: 'test-id-1', attr1: 'test-attr-1' };
-const EXPECTED2 = { id: 'test-id-2', attr1: 'test-attr-2' };
 
-describe('DELETE Lambda Function', () => {
-  test('should return 203 when item DELETED successfully', async () => {
-    const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
-    const queryStringParameters: Record<string, string> = { keyName: 'id' };
+describe('PUT Lambda Function', () => {
+  test('should return 201 when item POST successfully', async () => {
+    const pathParameters: Record<string, string> = { table: TEST_TABLE };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
     const body = JSON.stringify(EXPECTED1);
     const headers: Record<string, string> = {};
     const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
       pathParameters,
-      queryStringParameters,
       requestContext,
       headers,
       body,
@@ -26,11 +23,11 @@ describe('DELETE Lambda Function', () => {
     const contextMock: Context = <Context> { awsRequestId: v4() };
 
     const res: APIGatewayProxyResult = await handler(eventMock, contextMock);
-    const items = await dynamoHelper.getAll(TEST_TABLE);
+    const item = await dynamoHelper.get({ id: <AttributeValue> EXPECTED1.id }, TEST_TABLE);
 
-    expect(res.statusCode).toBe(203);
-    expect(items.length).toBe(1);
-    expect(items[0]).toEqual(EXPECTED2);
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toBe(JSON.stringify(EXPECTED1));
+    expect(item).toEqual(EXPECTED1);
   });
 
   test('should rethrow an error when table does not exist', async () => {
@@ -49,26 +46,6 @@ describe('DELETE Lambda Function', () => {
     await expect(handler(eventMock, contextMock)).rejects.toThrow();
   });
 
-  test('should throw error when no keyName given', async () => {
-    const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
-    const queryStringParameters: Record<string, string> = { };
-    const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
-    const body = JSON.stringify(EXPECTED1);
-    const headers: Record<string, string> = {};
-    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
-      pathParameters,
-      queryStringParameters,
-      requestContext,
-      headers,
-      body,
-    };
-    const contextMock: Context = <Context> { awsRequestId: v4() };
-
-    await expect(handler(eventMock, contextMock)).rejects.toThrow(
-      'One of the required keys was not given a value',
-    );
-  });
-
   beforeAll(async () => {
     const params: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(params);
@@ -80,8 +57,6 @@ describe('DELETE Lambda Function', () => {
 
     const createParams: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(createParams);
-    await dynamoHelper.create(EXPECTED1, TEST_TABLE);
-    await dynamoHelper.create(EXPECTED2, TEST_TABLE);
   });
 
   afterAll(async () => {
