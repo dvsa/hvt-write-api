@@ -24,6 +24,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
     const { keyName } = queryParams;
     const { body } = event;
     const data: Record<string, unknown> = <Record<string, unknown>> JSON.parse(body);
+    logger.info(`Put: ${JSON.stringify({ pathParams, keyName, data })}`);
 
     const res = await dynamodb.update({ [keyName]: id }, data, table);
 
