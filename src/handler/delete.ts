@@ -15,6 +15,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
   const logger: Logger = createLogger(event, context);
   const pathParams: Record<string, string> = event.pathParameters;
   const queryParams: Record<string, string> = event.queryStringParameters;
+  logger.info(`Delete: ${JSON.stringify({ pathParams, queryParams })}`);
 
   try {
     const id: AttributeValue = <AttributeValue> pathParams.id;

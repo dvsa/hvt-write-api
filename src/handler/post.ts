@@ -19,6 +19,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
     const { table } = pathParams;
     const { body } = event;
     const item: Record<string, unknown> = <Record<string, unknown>> JSON.parse(body);
+    logger.info(`Post: ${JSON.stringify({ pathParams, item })}`);
 
     await dynamodb.create(item, table);
 
