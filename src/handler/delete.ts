@@ -20,7 +20,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
   try {
     const id: AttributeValue = <AttributeValue> pathParams.id;
     const { table } = pathParams;
-    const { keyName } = queryParams;
+    const { keyName = 'id' } = queryParams;
 
     await dynamodb.remove({ [keyName]: id }, table);
 
