@@ -6,7 +6,7 @@ import { handler } from '../../../src/handler/put';
 import * as dynamoHelper from '../test-helpers/dynamo.helper';
 
 const TEST_TABLE = 'TEST_TABLE_PUT';
-const EXPECTED1 = { id: 'test-id-1', attr1: 'test-attr-1', attr2: 'test-attr-2' };
+const EXPECTED1 = { id: '1', attr1: 'test-attr-1', attr2: 'test-attr-2' };
 
 describe('PUT Lambda Function', () => {
   test('should return 200 when item PUT successfully', async () => {
@@ -90,6 +90,27 @@ describe('PUT Lambda Function', () => {
 
     await expect(handler(eventMock, contextMock)).rejects.toThrow(
       'One of the required keys was not given a value',
+    );
+  });
+
+  test('should throw error when `id` is not found', async () => {
+    const invalidId = '2';
+    const pathParameters: Record<string, string> = { table: TEST_TABLE, id: invalidId };
+    const queryStringParameters: Record<string, string> = { keyName: 'id' };
+    const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
+    const body = JSON.stringify(EXPECTED1);
+    const headers: Record<string, string> = {};
+    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
+      pathParameters,
+      queryStringParameters,
+      requestContext,
+      headers,
+      body,
+    };
+    const contextMock: Context = <Context> { awsRequestId: v4() };
+
+    await expect(handler(eventMock, contextMock)).rejects.toThrow(
+      'The conditional request failed',
     );
   });
 
