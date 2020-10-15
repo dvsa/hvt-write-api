@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
-    "test": "docker-compose -f docker-compose.test.yml up -d && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='local' jest tests/ --coverage",
-    "test:integration": "docker-compose -f docker-compose.test.yml up -d && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='local' jest tests/integration/",
-    "test:unit": "jest tests/unit/",
+    "build:db:test": "docker run --name hvt-dynamo-test -p 8001:8000 -d amazon/dynamodb-local",
+    "test": "npm run build:db:test && DYNAMO_URL='http://localhost:8001' DYNAMO_REGION='local' jest --coverage && npm run destroy:db:test",
+    "destroy:db:test": "docker stop hvt-dynamo-test && docker rm hvt-dynamo-test",
     "build:dev": "NODE_ENV=development webpack-cli",
-    "start:dev": "DYNAMO_URL='http://host.docker.internal:8000' DYNAMO_REGION='local' sam local start-api --docker-network hvt-lambda-network -p 3001",
-    "invoke": "sam local invoke"
+    "start:dev": "DYNAMO_URL='http://host.docker.internal:8000' DYNAMO_REGION='local' sam local start-api -p 3001 --docker-network hvt-network"
   },
   "contributors": [
     {
