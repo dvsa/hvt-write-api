@@ -15,7 +15,7 @@ describe('Test logger', () => {
     const logger: Logger = createLogger(eventMock, contextMock);
 
     expect(logger.logFormat).toBe(
-      `{"apiRequestId":"${apiRequestId}","correlationId":"${awsRequestId}","message":"%s"}`,
+      `{ "apiRequestId": "${apiRequestId}", "correlationId": "${awsRequestId}", "message": "%s" }`,
     );
   });
 
@@ -31,7 +31,7 @@ describe('Test logger', () => {
     const logger: Logger = createLogger(eventMock, contextMock);
 
     expect(logger.logFormat).toBe(
-      `{"apiRequestId":"${apiRequestId}","correlationId":"${headerCorrelationId}","message":"%s"}`,
+      `{ "apiRequestId": "${apiRequestId}", "correlationId": "${headerCorrelationId}", "message": "%s" }`,
     );
   });
 
