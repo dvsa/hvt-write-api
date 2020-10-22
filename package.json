@@ -10,6 +10,7 @@
     "test:integration": "npm run build:db:test && DYNAMO_URL='http://localhost:8001' DYNAMO_REGION='local' jest --coverage tests/integration && npm run destroy:db:test",
     "destroy:db:test": "docker stop hvt-dynamo-test && docker rm hvt-dynamo-test",
     "build:dev": "NODE_ENV=development webpack-cli",
+    "build:prod": "NODE_ENV=production webpack-cli",
     "start:dev": "DYNAMO_URL='http://host.docker.internal:8000' DYNAMO_REGION='local' sam local start-api -p 3001 --docker-network hvt-network"
   },
   "contributors": [
