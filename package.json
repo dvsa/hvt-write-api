@@ -9,8 +9,8 @@
     "build:db:test": "docker run --name hvt-dynamo-test -p 8001:8000 -d amazon/dynamodb-local",
     "test:integration": "npm run build:db:test && DYNAMO_URL='http://localhost:8001' DYNAMO_REGION='local' jest --coverage tests/integration && npm run destroy:db:test",
     "destroy:db:test": "docker stop hvt-dynamo-test && docker rm hvt-dynamo-test",
-    "build:dev": "NODE_ENV=development webpack-cli",
-    "build:prod": "NODE_ENV=production webpack-cli",
+    "build:dev": "webpack-cli --config webpack.development.js",
+    "build:prod": "webpack-cli --config webpack.production.js",
     "start:dev": "sam local start-api -p 3001 --docker-network hvt-network"
   },
   "contributors": [
@@ -32,10 +32,13 @@
     "@types/joi": "^14.3.4",
     "@types/node": "^12.0.8",
     "@types/uuid": "^8.3.0",
+    "archiver": "^5.0.2",
     "aws-sam-webpack-plugin": "^0.6.0",
     "copy-webpack-plugin": "^6.2.1",
+    "current-git-branch": "^1.1.0",
     "eslint": "^7.6.0",
     "eslint-import-resolver-typescript": "^2.3.0",
+    "fs-extra": "^9.0.1",
     "jest": "^26.4.2",
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.3.0",
@@ -43,7 +46,8 @@
     "typescript": "^3.9.7",
     "uuid": "^8.3.0",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.2.0"
   },
   "engines": {
     "node": "^12.18.4"
