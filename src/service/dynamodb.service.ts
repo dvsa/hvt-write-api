@@ -4,7 +4,7 @@ import {
   DeleteItemOutput, Key, PutItemOutput, UpdateItemInput, UpdateItemOutput,
 } from 'aws-sdk/clients/dynamodb';
 
-const client = new DynamoDB.DocumentClient({
+export const client = new DynamoDB.DocumentClient({
   endpoint: process.env.DYNAMO_URL,
   region: process.env.DYNAMO_REGION,
 });

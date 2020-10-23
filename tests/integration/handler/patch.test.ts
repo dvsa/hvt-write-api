@@ -2,14 +2,14 @@ import type {
   APIGatewayProxyEvent, APIGatewayProxyResult, Context, APIGatewayEventRequestContext, AttributeValue,
 } from 'aws-lambda';
 import { v4 } from 'uuid';
-import { handler } from '../../../src/handler/put';
+import { handler } from '../../../src/handler/patch';
 import * as dynamoHelper from '../test-helpers/dynamo.helper';
 
 const TEST_TABLE = 'TEST_TABLE_PUT';
 const EXPECTED1 = { id: '1', attr1: 'test-attr-1', attr2: 'test-attr-2' };
 
-describe('PUT Lambda Function', () => {
-  test('should return 200 when item PUT successfully', async () => {
+describe('PATCH Lambda Function', () => {
+  test('should return 200 when item PATCH successfully', async () => {
     const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
     const queryStringParameters: Record<string, string> = { keyName: 'id' };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
@@ -73,11 +73,11 @@ describe('PUT Lambda Function', () => {
     await expect(handler(eventMock, contextMock)).rejects.toThrow();
   });
 
-  test('should throw error when no keyName given', async () => {
+  test('should return 200 when item PATCH successfully when no keyName query param provided explictly', async () => {
     const pathParameters: Record<string, string> = { table: TEST_TABLE, id: EXPECTED1.id };
     const queryStringParameters: Record<string, string> = { };
     const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
-    const body = JSON.stringify(EXPECTED1);
+    const body = JSON.stringify({ attr1: 'test-attr-1', attr2: 'test-attr-2' });
     const headers: Record<string, string> = {};
     const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
       pathParameters,
@@ -88,9 +88,12 @@ describe('PUT Lambda Function', () => {
     };
     const contextMock: Context = <Context> { awsRequestId: v4() };
 
-    await expect(handler(eventMock, contextMock)).rejects.toThrow(
-      'One of the required keys was not given a value',
-    );
+    const res: APIGatewayProxyResult = await handler(eventMock, contextMock);
+    const item = await dynamoHelper.get({ id: <AttributeValue> EXPECTED1.id }, TEST_TABLE);
+
+    expect(res.statusCode).toBe(200);
+    expect(JSON.parse(res.body)).toStrictEqual(EXPECTED1);
+    expect(item).toEqual(EXPECTED1);
   });
 
   test('should throw error when `id` is not found', async () => {
