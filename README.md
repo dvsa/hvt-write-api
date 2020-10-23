@@ -5,7 +5,7 @@ A WRITE api for HVT testing data
 **Requirements**
 
 - Docker && Docker Compose
-- node v12.18.3
+- node v12.18.4
 - [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
 
@@ -17,6 +17,7 @@ A WRITE api for HVT testing data
 
 **Run Lambdas Locally**
 
+- Create a `.env` file from the template in `.env.development`.
 - `npm run start:dev`
 - To ensure that the lambdas have been successfully served, run the following command in a separate terminal:
     - `curl --location --request POST 'localhost:3001?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`

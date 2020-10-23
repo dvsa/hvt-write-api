@@ -3,10 +3,13 @@ import type { AttributeValue } from 'aws-lambda';
 import {
   DeleteItemOutput, Key, PutItemOutput, UpdateItemInput, UpdateItemOutput,
 } from 'aws-sdk/clients/dynamodb';
+import { getConfig, Config } from '../lib/config';
+
+const config: Config = getConfig();
 
 export const client = new DynamoDB.DocumentClient({
-  endpoint: process.env.DYNAMO_URL,
-  region: process.env.DYNAMO_REGION,
+  endpoint: config.DYNAMO_URL,
+  region: config.DYNAMO_REGION,
 });
 
 const getUpdateParams = (
