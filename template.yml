@@ -29,28 +29,11 @@ Resources:
             Path: /bulk-update/{table}
             Method: put
 
-  PostLambdaFunction:
+  PatchLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       CodeUri: src/handler/
-      Handler: post.handler
-      Runtime: nodejs12.x
-      Environment:
-        Variables:
-          DYNAMO_URL: !Ref DYNAMO_URL
-          DYNAMO_REGION: !Ref DYNAMO_REGION
-      Events:
-        PutLambdaApi:
-          Type: Api
-          Properties:
-            Path: /{table}
-            Method: post
-
-  PutLambdaFunction:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      CodeUri: src/handler/
-      Handler: put.handler
+      Handler: patch.handler
       Runtime: nodejs12.x
       Environment:
         Variables:
@@ -63,19 +46,3 @@ Resources:
             Path: /{table}/{id}
             Method: put
 
-  DeleteLambdaFunction:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      CodeUri: src/handler/
-      Handler: delete.handler
-      Runtime: nodejs12.x
-      Environment:
-        Variables:
-          DYNAMO_URL: !Ref DYNAMO_URL
-          DYNAMO_REGION: !Ref DYNAMO_REGION
-      Events:
-        DeleteLambdaApi:
-          Type: Api
-          Properties:
-            Path: /{table}/{id}
-            Method: delete
