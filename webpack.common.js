@@ -18,9 +18,6 @@ module.exports = {
     path: path.resolve('.')
   },
 
-  // Create source maps
-  devtool: 'source-map',
-
   // Resolve .ts and .js extensions
   resolve: {
       extensions: ['.ts', '.js']
@@ -28,9 +25,6 @@ module.exports = {
 
   // Target node
   target: 'node',
-
-  // Set the webpack mode
-  mode: process.env.NODE_ENV || 'production',
 
   // Add the TypeScript loader
   module: {
