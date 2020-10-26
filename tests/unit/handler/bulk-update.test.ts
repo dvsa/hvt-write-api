@@ -9,6 +9,13 @@ import { handler } from '../../../src/handler/bulk-update';
 jest.mock('../../../src/lib/bulk-update');
 jest.mock('../../../src/service/dynamodb.service');
 jest.mock('../../../src/util/logger');
+jest.mock('../../../src/lib/config', () => ({
+  getConfig: jest.fn().mockReturnValue({
+    NODE_ENV: 'development',
+    DYNAMO_URL: 'some-url',
+    DYNAMO_REGION: 'eu-west-2',
+  }),
+}));
 
 const { parsePayload } = bulkUpdate as jest.Mocked<typeof bulkUpdate>;
 const { update } = dynamoDbService as jest.Mocked<typeof dynamoDbService>;
