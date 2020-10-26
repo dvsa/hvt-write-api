@@ -8,6 +8,7 @@ Resources:
       CodeUri: src/handler
       Handler: bulk-update.handler
       Runtime: nodejs12.x
+      Timeout: 10
       Events:
         BulkUpdateLambdaApi:
           Type: Api
