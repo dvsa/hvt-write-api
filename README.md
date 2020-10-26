@@ -1,38 +1,34 @@
-# HVT WRITE API
+# hvt-write-api
 
-A WRITE api for HVT testing data 
+Serverless Node lambdas (PatchLambdaFunction and BulkUpdateFunction) for patching DynamoDB data.
 
-**Requirements**
+## Requirements
 
-- Docker && Docker Compose
-- node v12.18.4
+- [node v12.18.4](https://nodejs.org/en/download/releases/)
+- [Docker](https://www.docker.com/get-started)
 - [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
 
-**Build**
+## Run Locally
 
-- `npm i`
-- `npm run build:dev`
-
-
-**Run Lambdas Locally**
-
-- Create a `.env` file from the template in `.env.development`.
-- `npm run start:dev`
-- To ensure that the lambdas have been successfully served, run the following command in a separate terminal:
-    - `curl --location --request POST 'localhost:3001?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`
-    - the response should be: `{"body":{"test":"test"}}`
+1. Follow build steps in [hvt-data](https://gitlab.motdev.org.uk/hvtesting/hvt-data/) to prepare local dataset
+1. `npm i`
+1. `cp .env.development .env`
+1. `npm run build:dev`
+1. `npm run start:dev`
+1. Send an HTTP request to the lambda's URI (`curl --request PUT http://localhost:3001/<DYNAMODB_TABLE_NAME>/<ITEM_ID>?keyName=<ITEM_KEYNAME> \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`)
+    - E.G. ITEM_ID=c6af9ab6-7b62-11ed-9ae1-93e8dgadbdef, ITEM_KEYNAME=id
 
 
-**Debug Lambdas Locally (VS Code only)**
+## Debug Locally (VS Code only)
 
-- Run lambdas in debug mode: `npm run start:dev -- -d 5858`
-- Add a breakpoint to the lambda being tested (`src/handler/post.ts`)
-- Run the debug config from VS Code that corresponds to lambda being tested (`PostLambdaFunction`)
-- Send an HTTP request to the lambda's URI (`curl --location --request POST 'localhost:3001?test=test' \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`)
+1. Run lambdas in debug mode: `npm run start:dev -- -d 5858`
+1. Add a breakpoint to the lambda being tested (`src/handler/patfch.ts`)
+1. Run the debug config from VS Code that corresponds to lambda being tested (`GetLambdaFunction`)
+1. Send an HTTP request to the lambda's URI (`curl --request PUT http://localhost:3001/<DYNAMODB_TABLE_NAME>/<ITEM_ID>?keyName=<ITEM_KEYNAME> \--header 'Content-Type: application/json' \--data-raw '{"test":"test"}'`)
+    - E.G. ITEM_ID=c6af9ab6-7b62-11ed-9ae1-93e8dgadbdef, ITEM_KEYNAME=id
 
-
-**Tests**
+## Tests
 
 - The [Jest](https://jestjs.io/) framework is used to run tests and collect code coverage
 - To run the tests, run the following command within the root directory of the project: `npm test`
@@ -40,7 +36,15 @@ A WRITE api for HVT testing data
     - The coverage requirements can be set in `jest.config.js`
 
 
-**Logging**
+## Build for Production
+
+1. `npm i`
+1. add environment variables to `.env`
+1. `npm run build:prod`
+1.  Zip file can be found in `./dist/`
+
+
+## Logging
 
 By using a utility wrapper (`src/util/logger`) surrounding `console.log`, the `awsRequestId` and a "correlation ID" is output with every debug/info/warn/error message.
 
