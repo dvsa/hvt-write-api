@@ -77,6 +77,11 @@ describe('Dynamodb service tests', () => {
   });
 
   beforeEach(() => {
+    // eslint-disable-next-line max-len
+    jest.mock('../../../src/lib/config', () => ({ getConfig: { NODE_ENV: 'development', DYNAMO_URL: 'some-url', DYNAMO_REGION: 'eu-west-2' } }));
+  });
+
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 });
