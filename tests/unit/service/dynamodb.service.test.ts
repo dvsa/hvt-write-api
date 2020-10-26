@@ -3,6 +3,14 @@ import { Key } from 'aws-sdk/clients/dynamodb';
 import type { AttributeValue } from 'aws-lambda';
 import * as dynamoDbService from '../../../src/service/dynamodb.service';
 
+jest.mock('../../../src/lib/config', () => ({
+  getConfig: jest.fn().mockReturnValue({
+    NODE_ENV: 'development',
+    DYNAMO_URL: 'some-url',
+    DYNAMO_REGION: 'eu-west-2',
+  }),
+}));
+
 const TEST_TABLE = 'TEST_TABLE_SERVICE';
 const EXPECTED1 = { id: '1', attr1: 'test-attr-1', attr2: 'test-attr-2' };
 const PROMISE_RESULT = 'PROMISE RESULT';
@@ -74,14 +82,5 @@ describe('Dynamodb service tests', () => {
     expect(deleteMock).toHaveBeenCalledWith(expectedCallParams);
     expect(promiseMock).toHaveBeenCalled();
     expect(response).toBe(PROMISE_RESULT);
-  });
-
-  beforeEach(() => {
-    // eslint-disable-next-line max-len
-    jest.mock('../../../src/lib/config', () => ({ getConfig: { NODE_ENV: 'development', DYNAMO_URL: 'some-url', DYNAMO_REGION: 'eu-west-2' } }));
-  });
-
-  beforeEach(() => {
-    jest.clearAllMocks();
   });
 });
