@@ -53,12 +53,3 @@ export const update = async (
 
   return client.update(params).promise();
 };
-
-export const remove = async (key: Key, table: string): Promise<DeleteItemOutput> => {
-  const params = {
-    Key: key,
-    TableName: table,
-  };
-
-  return client.delete(params).promise();
-};

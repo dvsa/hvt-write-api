@@ -66,21 +66,4 @@ describe('Dynamodb service tests', () => {
     expect(promiseMock).toHaveBeenCalled();
     expect(response).toBe(PROMISE_RESULT);
   });
-
-  it('should construct DELETE PARAMS OBJECT and call DELETE on dynamo client', async () => {
-    const deleteMock = jest.fn().mockImplementation(() => ({
-      promise: promiseMock,
-    }));
-    dynamoDbService.client.delete = deleteMock.bind(dynamoDbService.client);
-    const expectedCallParams = {
-      Key: { id: EXPECTED1.id },
-      TableName: TEST_TABLE,
-    };
-
-    const response = await dynamoDbService.remove({ id: EXPECTED1.id } as Key, TEST_TABLE);
-
-    expect(deleteMock).toHaveBeenCalledWith(expectedCallParams);
-    expect(promiseMock).toHaveBeenCalled();
-    expect(response).toBe(PROMISE_RESULT);
-  });
 });
