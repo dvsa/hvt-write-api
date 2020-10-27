@@ -53,19 +53,6 @@ describe('Test dynamodb service', () => {
     expect(result).toEqual({ id: original.id, attr1: 'test-attr-1-updated', attr2: 'test-attr-2-updated' });
   });
 
-  test('Delete should remove one item in the table', async () => {
-    const expected1 = { id: '1', attr1: 'test-attr-1' };
-    const expected2 = { id: '2', attr1: 'test-attr-2' };
-    await dynamoHelper.create(expected1, TEST_TABLE);
-    await dynamoHelper.create(expected2, TEST_TABLE);
-
-    await dynamodb.remove({ id: <AttributeValue> expected1.id }, TEST_TABLE);
-
-    const result = await dynamoHelper.getAll(TEST_TABLE);
-    expect(result.length).toBe(1);
-    expect(result[0]).toEqual(expected2);
-  });
-
   beforeAll(async () => {
     const params: Record<string, unknown> = dynamoHelper.getCreateTableParams('id', TEST_TABLE);
     await dynamoHelper.createTable(params);
