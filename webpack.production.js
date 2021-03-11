@@ -6,8 +6,10 @@ const branchName = require('current-git-branch');
 
 const PATCH_LAMBDA_NAME = "BulkUpdateFunction"; 
 const BULK_UPDATE_LAMBDA_NAME = "PatchLambdaFunction";
-const OUTPUT_FOLDER = './dist'
+const INPUT_FOLDER = `.aws-sam/build/`;
+const OUTPUT_FOLDER = './dist';
 const BUILD_VERSION = branchName().replace("/","-");
+const BUILD_NAME = `HVT-WRITE-API-${BUILD_VERSION}`;
 
 class BundlePlugin {
   constructor(params) {
@@ -17,9 +19,7 @@ class BundlePlugin {
 
   apply(compiler) {
     compiler.hooks.afterEmit.tap('zip-pack-plugin', async (compilation) => {
-      this.archives.forEach(async (archive) => {
-        await this.createArchive(archive.inputPath, archive.outputPath, archive.outputName, archive.ignore);
-      })
+      await this.createArchive(INPUT_FOLDER, OUTPUT_FOLDER, BUILD_NAME, 'template.yaml');
 
       this.assets.forEach((asset) => {
         fs.copySync(asset.inputPath, asset.outputPath);
@@ -41,13 +41,13 @@ class BundlePlugin {
     archive.on('error', function(err){
         throw err;
     });
-    
+
     archive.pipe(output);
     archive.glob(
       `**/*`, 
       { 
         cwd: inputPath,
-        skip: ignore
+        ignore: ignore
       }
     );
     return archive.finalize();
