@@ -41,6 +41,8 @@ Serverless Node lambdas (PatchLambdaFunction and BulkUpdateFunction) for patchin
 1. `npm i`
 1. add environment variables to `.env`
 1. `npm run build:prod`
+1. to build with commit id
+1. `npm run build:prod -- --emv.commit=<commit-hash>`
 1.  Zip file can be found in `./dist/`
 
 
