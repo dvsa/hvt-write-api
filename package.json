@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
     "test": "jest --coverage tests/unit",
-    "test:integration": "npm run build:db:test && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='eu-west-2' jest --coverage tests/integration && npm run destroy:db:test",
+    "test:integration": "npm run build:db:test && DYNAMO_URL='http://localhost:8002' DYNAMO_REGION='eu-west-1' jest --coverage tests/integration && npm run destroy:db:test",
     "build:db:test": "docker run --name hvt-dynamo-test-write-api -p 8002:8000 -d amazon/dynamodb-local",
     "destroy:db:test": "docker stop hvt-dynamo-test-write-api && docker rm hvt-dynamo-test-write-api",
     "build:dev": "webpack-cli --config webpack.development.js",
