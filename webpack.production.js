@@ -6,8 +6,9 @@ const branchName = require('current-git-branch');
 
 const PATCH_LAMBDA_NAME = "BulkUpdateFunction"; 
 const BULK_UPDATE_LAMBDA_NAME = "PatchLambdaFunction";
-const OUTPUT_FOLDER = './dist'
-const BUILD_VERSION = branchName().replace("/","-");
+const OUTPUT_FOLDER = './dist';
+const REPO_NAME = `hvt-write-api`;
+const BRANCH_NAME = branchName().replace("/","-");
 
 class BundlePlugin {
   constructor(params) {
@@ -41,35 +42,41 @@ class BundlePlugin {
     archive.on('error', function(err){
         throw err;
     });
-    
+
     archive.pipe(output);
+
     archive.glob(
-      `**/*`, 
-      { 
+      `**/*`,
+      {
         cwd: inputPath,
-        skip: ignore
+        ignore: ignore
       }
     );
+
     return archive.finalize();
   }
 };
 
-module.exports = merge(common, {
-  mode: 'production',
-  plugins: [
-    new BundlePlugin({
-      archives: [
-        {
-          inputPath: `.aws-sam/build/${PATCH_LAMBDA_NAME}`,
-          outputPath: `${OUTPUT_FOLDER}`,
-          outputName: `HVT-${PATCH_LAMBDA_NAME}-${BUILD_VERSION}`,
-        },
-        {
-          inputPath: `.aws-sam/build/${BULK_UPDATE_LAMBDA_NAME}`,
-          outputPath: `${OUTPUT_FOLDER}`,
-          outputName: `HVT-${BULK_UPDATE_LAMBDA_NAME}-${BUILD_VERSION}`,
-        }
-      ],
-    }),
-  ],
-});
+module.exports = env => {
+  let commit = env ? env.commit ? env.commit : 'local' : 'local' ;
+  return merge(common, {
+    mode: 'production',
+    plugins: [
+      new BundlePlugin({
+        commit: commit,
+        archives: [
+          {
+            inputPath: `.aws-sam/build/${PATCH_LAMBDA_NAME}`,
+            outputPath: `${OUTPUT_FOLDER}`,
+            outputName: `${REPO_NAME}-${PATCH_LAMBDA_NAME}-${BRANCH_NAME}-${commit}`,
+          },
+          {
+            inputPath: `.aws-sam/build/${BULK_UPDATE_LAMBDA_NAME}`,
+            outputPath: `${OUTPUT_FOLDER}`,
+            outputName: `${REPO_NAME}-${BULK_UPDATE_LAMBDA_NAME}-${BRANCH_NAME}-${commit}`,
+          }
+        ],
+      }),
+    ],
+  });
+}

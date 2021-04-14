@@ -9,7 +9,7 @@ jest.mock('../../../src/lib/config', () => ({
   getConfig: jest.fn().mockReturnValue({
     NODE_ENV: 'development',
     DYNAMO_URL: 'some-url',
-    DYNAMO_REGION: 'eu-west-2',
+    DYNAMO_REGION: 'eu-west-1',
   }),
 }));
 
