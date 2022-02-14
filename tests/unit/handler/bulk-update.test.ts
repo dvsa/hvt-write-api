@@ -1,5 +1,4 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
-
 import * as logger from '../../../src/util/logger';
 import * as bulkUpdate from '../../../src/lib/bulk-update';
 import * as dynamoDbService from '../../../src/service/dynamodb.service';
