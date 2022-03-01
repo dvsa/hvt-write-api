@@ -23,7 +23,7 @@ export const parsePayload = (requestBody: string): BulkUpdatePayload => {
   }
 
   const result = payloadSchema.validate(payload);
-  if (result.error || result.errors) {
+  if (result.error) {
     throw new Error('Payload is invalid.');
   }
 
