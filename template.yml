@@ -7,7 +7,7 @@ Resources:
     Properties:
       CodeUri: src/handler
       Handler: bulk-update.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Timeout: 10
       Events:
         BulkUpdateLambdaApi:
@@ -21,7 +21,7 @@ Resources:
     Properties:
       CodeUri: src/handler/
       Handler: patch.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Events:
         PutLambdaApi:
           Type: Api
