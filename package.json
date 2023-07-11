@@ -23,7 +23,7 @@
   "dependencies": {
     "aws-sdk": "^2.747.0",
     "dotenv": "^8.2.0",
-    "joi": "^17.2.1"
+    "joi": "^17.6.1"
   },
   "devDependencies": {
     "@dvsa/eslint-config-ts": "^3.0.0",
