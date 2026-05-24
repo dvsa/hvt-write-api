@@ -16,7 +16,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context): Pr
 
   const promises = payload.map((itemUpdateData) =>
   // eslint-disable-next-line implicit-arrow-linebreak
-    update('id', itemUpdateData.id as AttributeValue, itemUpdateData.update, table)
+    update('id', itemUpdateData.id as unknown as AttributeValue, itemUpdateData.update, table)
       .then(() => ({ id: itemUpdateData.id, result: 'success' }))
       .catch(() => ({ id: itemUpdateData.id, result: 'failure' })));
 

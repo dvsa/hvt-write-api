@@ -60,7 +60,7 @@ describe('Dynamodb service tests', () => {
       UpdateExpression: 'SET #id = :id, #attr1 = :attr1, #attr2 = :attr2',
     };
 
-    const response = await dynamoDbService.update('id', <AttributeValue> EXPECTED1.id, EXPECTED1, TEST_TABLE);
+    const response = await dynamoDbService.update('id', EXPECTED1.id as unknown as AttributeValue, EXPECTED1, TEST_TABLE);
 
     expect(updateMock).toHaveBeenCalledWith(expectedCallParams);
     expect(promiseMock).toHaveBeenCalled();
